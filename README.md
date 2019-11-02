@@ -68,5 +68,5 @@ TODO
 [codecov-image]: <https://codecov.io/gh/woctezuma/steam-trade-finder/branch/master/graph/badge.svg>
 
 [codacy]: <https://www.codacy.com/app/woctezuma/steam-trade-finder>
-[codacy-image]: <https://api.codacy.com/project/badge/Grade/TODO>
+[codacy-image]: <https://api.codacy.com/project/badge/Grade/038afb64dd404f8f978ff8ba41b65aef>
 
