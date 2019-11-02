@@ -1,4 +1,4 @@
-# Steam Trader Finder
+# Steam Trade Finder
 
 
 [![Build status][build-image]][build]
