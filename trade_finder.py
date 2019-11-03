@@ -19,11 +19,16 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
     try:
         total_inventory_count = steam_inventory['total_inventory_count']
     except TypeError:
+        # Private inventory (error 403 Forbidden)
         total_inventory_count = -1
 
     try:
         last_asset_id = steam_inventory['last_assetid']
     except KeyError:
+        # Small Inventory, i.e. fewer items than num_inventory_items_per_query (5000). Hence no need for a second query.
+        last_asset_id = None
+    except TypeError:
+        # Private inventory (error 403 Forbidden)
         last_asset_id = None
 
     # Reference: https://steamcommunity.com/discussions/forum/1/1736595227843280036/
