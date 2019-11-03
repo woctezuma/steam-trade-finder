@@ -129,9 +129,13 @@ def check_all_asf_bots(market_app_id,
 
 
 def main(self_test=False,
+         market_app_id=None,
          max_inventory_size=None,
          profile_id=None):
-    market_app_id = 448720
+    if market_app_id is None:
+        # App: "Puzzle Box"
+        # Reference: https://www.steamcardexchange.net/index.php?gamepage-appid-448720
+        market_app_id = 448720
 
     if self_test:
         market_app_has_been_found = check_whether_items_for_given_app_exist_in_inventory_of_given_user(
