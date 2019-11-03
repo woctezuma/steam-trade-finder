@@ -1,5 +1,6 @@
 import unittest
 
+import download_bot_listing
 import inventory_utils
 import personal_info
 import trade_finder
@@ -22,6 +23,12 @@ class TestInventoryUtilsMethods(unittest.TestCase):
 
     def test_main(self):
         self.assertTrue(inventory_utils.main())
+
+
+class TestDownloadBotListingMethods(unittest.TestCase):
+
+    def test_main(self):
+        self.assertTrue(download_bot_listing.main())
 
 
 class TestTradeFinderMethods(unittest.TestCase):
