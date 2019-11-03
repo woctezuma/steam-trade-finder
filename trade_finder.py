@@ -23,7 +23,7 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
         last_asset_id = None
 
     while last_asset_id is not None:
-        print('Downloading additional data for userID {} (total inventory count= {}) starting from assetID {}.'.format(
+        print('Downloading additional data for userID {} (total inventory count = {}) starting from assetID {}.'.format(
             profile_id,
             total_inventory_count,
             last_asset_id,
