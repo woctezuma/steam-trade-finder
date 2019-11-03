@@ -22,31 +22,38 @@ pip install -r requirements.txt
 
 ### Download the list of userIDs of ASF bots
 
-Using Visual Studio Code, with regular expressions allowed, edit lines as follows: 
+Download the HTML code from [a public listing of ASF bots](https://asf.justarchi.net/STM).
+Then edit it as follows, using for instance Visual Studio Code, with regular expressions allowed: 
 
-Remove HTML lines [which do not contain the word]((https://stackoverflow.com/a/7024359)) "steamtradematcher":
+1. Remove HTML lines [which do not contain the word]((https://stackoverflow.com/a/7024359)) "steamtradematcher":
 ```regexp
 ^(?!.*steamtradematcher.*).+$
 ```
 
-Trim the beginning of lines:
+2. Trim the beginning of lines:
 ```regexp
 ^.*/specscan/
 ```
 
-Trim the end of lines:
+3. Trim the end of lines:
 ```regexp
 " target.*$
 ```
 
-Replace the following with `\n`:
+4. Replace the following with `\n`:
 ```regexp
 \n+
 ```
 
-### TODO
+You should obtain a list of userIDs of ASF bots, similar to [`data/asf_bots.txt`](data/asf_bots.txt).
 
-TODO
+### Find Steam trades
+
+Run the following script to find Steam trades:
+
+```bash
+python trade_finder.py
+```
 
 ## References
 
