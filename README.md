@@ -22,7 +22,19 @@ pip install -r requirements.txt
 
 ### Download the list of userIDs of ASF bots
 
-Download the HTML code from [a public listing of ASF bots](https://asf.justarchi.net/STM).
+The objective is to obtain a list of userIDs of ASF bots, as found in [`data/asf_bots.txt`](data/asf_bots.txt).
+
+#### Automatic process
+
+Run the following script to download the list of userIDs of ASF bots:
+
+```bash
+python download_bot_listing.py
+```
+
+#### Manual process
+
+Alternatively, one could manually download the HTML code from [a public listing of ASF bots](https://asf.justarchi.net/STM).
 Then edit it as follows, using for instance Visual Studio Code, with regular expressions allowed: 
 
 1. Remove HTML lines [which do not contain the word]((https://stackoverflow.com/a/7024359)) "steamtradematcher":
@@ -40,12 +52,10 @@ Then edit it as follows, using for instance Visual Studio Code, with regular exp
 " target.*$
 ```
 
-4. Replace the following with `\n`:
+4. Replace the following with `\n`, in order to remove empty lines:
 ```regexp
 \n+
 ```
-
-You should obtain a list of userIDs of ASF bots, similar to [`data/asf_bots.txt`](data/asf_bots.txt).
 
 ### Find Steam trades
 
@@ -54,6 +64,8 @@ Run the following script to find Steam trades:
 ```bash
 python trade_finder.py
 ```
+
+The default market appID is `448720` for [Puzzle Box](https://www.steamcardexchange.net/index.php?gamepage-appid-448720).
 
 ## References
 
