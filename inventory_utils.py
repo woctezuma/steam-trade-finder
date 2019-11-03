@@ -44,7 +44,7 @@ def load_steam_inventory_from_disk(profile_id=None):
     try:
         with open(get_steam_inventory_file_name(profile_id), 'r') as f:
             steam_inventory = json.load(f)
-    except FileNotFoundError:
+    except (FileNotFoundError, json.decoder.JSONDecodeError) as e:
         steam_inventory = download_steam_inventory(profile_id, save_to_disk=True)
 
     return steam_inventory
