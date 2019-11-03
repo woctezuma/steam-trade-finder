@@ -121,13 +121,14 @@ def check_all_asf_bots(market_app_id):
     return
 
 
-def main(self_test=False):
+def main(self_test=False,
+         profile_id=None):
     market_app_id = 448720
 
     if self_test:
         market_app_has_been_found = check_whether_items_for_given_app_exist_in_inventory_of_given_user(
             market_app_id=market_app_id,
-            profile_id=None)
+            profile_id=profile_id)
     else:
         check_all_asf_bots(market_app_id)
 
