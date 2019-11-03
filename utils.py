@@ -12,6 +12,12 @@ def get_data_folder():
     return data_folder
 
 
+def get_bot_listing_file_name():
+    bot_listing_file_name = get_data_folder() + 'asf_bots.txt'
+
+    return bot_listing_file_name
+
+
 def main():
     return True
 

@@ -2,7 +2,7 @@ import json
 
 from inventory_utils import get_my_steam_profile_id, get_steam_inventory_file_name
 from inventory_utils import load_steam_inventory, download_steam_inventory
-from utils import get_data_folder
+from utils import get_bot_listing_file_name
 
 
 def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_app_id,
@@ -112,7 +112,7 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
 
 def check_all_asf_bots(market_app_id,
                        max_inventory_size=50000):
-    with open(get_data_folder() + 'asf_bots.txt', 'r') as f:
+    with open(get_bot_listing_file_name(), 'r') as f:
         lines = f.readlines()
 
     for profile_id_as_str in lines:
