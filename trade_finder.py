@@ -15,7 +15,10 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
     steam_inventory = load_steam_inventory(profile_id=profile_id,
                                            update_steam_inventory=update_steam_inventory)
 
-    total_inventory_count = steam_inventory['total_inventory_count']
+    try:
+        total_inventory_count = steam_inventory['total_inventory_count']
+    except TypeError:
+        total_inventory_count = -1
 
     try:
         last_asset_id = steam_inventory['last_assetid']
