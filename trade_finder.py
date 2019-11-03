@@ -8,6 +8,7 @@ from utils import get_data_folder
 def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_app_id,
                                                                        profile_id=None,
                                                                        update_steam_inventory=False,
+                                                                       max_inventory_size=50000,
                                                                        verbose=True):
     if profile_id is None:
         profile_id = get_my_steam_profile_id()
@@ -25,6 +26,11 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
     except KeyError:
         last_asset_id = None
 
+    # Reference: https://steamcommunity.com/discussions/forum/1/1736595227843280036/
+    num_inventory_items_per_query = 5000  # value corresponding to the new API end-point. Not chosen by the user!
+
+    query_counter = 0
+
     while last_asset_id is not None:
         print('Downloading additional data for userID {} (total inventory count = {}) starting from assetID {}.'.format(
             profile_id,
@@ -32,12 +38,26 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
             last_asset_id,
         ))
 
-        if total_inventory_count > 50000:
+        if total_inventory_count < 0:
+            print('Total inventory count unknown ({}). Exiting the query loop.'.format(
+                total_inventory_count
+            ))
+            break
+
+        if max_inventory_size is not None and (query_counter * num_inventory_items_per_query) >= max_inventory_size:
+            print('Total inventory count is large ({}). Exiting the query loop after {} queries of {} items.'.format(
+                total_inventory_count,
+                query_counter,
+                num_inventory_items_per_query
+            ))
             break
 
         steam_inventory_update = download_steam_inventory(profile_id=profile_id,
                                                           save_to_disk=False,
                                                           start_asset_id=last_asset_id)
+
+        query_counter += 1
+
         try:
             last_asset_id = steam_inventory_update['last_assetid']
         except KeyError:
