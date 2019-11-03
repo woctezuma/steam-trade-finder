@@ -74,12 +74,12 @@ def download_steam_inventory(profile_id=None,
     url = get_steam_inventory_url(profile_id=profile_id)
 
     req_data = dict(
-        l='english',
+        l='english',  # noqa: E741
         count=5000,
     )  # TODO
 
     if start_asset_id is not None:
-        req_data['start_assetid'] = start_asset_id # TODO
+        req_data['start_assetid'] = start_asset_id  # TODO
 
     if has_secured_cookie:
         resp_data = requests.get(url,
