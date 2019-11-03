@@ -8,7 +8,7 @@ from utils import get_data_folder
 def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_app_id,
                                                                        profile_id=None,
                                                                        update_steam_inventory=False,
-                                                                       max_inventory_size=50000,
+                                                                       max_inventory_size=None,
                                                                        verbose=True):
     if profile_id is None:
         profile_id = get_my_steam_profile_id()
@@ -110,7 +110,8 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
     return market_app_has_been_found
 
 
-def check_all_asf_bots(market_app_id):
+def check_all_asf_bots(market_app_id,
+                       max_inventory_size=50000):
     with open(get_data_folder() + 'asf_bots.txt', 'r') as f:
         lines = f.readlines()
 
@@ -121,21 +122,25 @@ def check_all_asf_bots(market_app_id):
 
         market_app_has_been_found = check_whether_items_for_given_app_exist_in_inventory_of_given_user(
             market_app_id=market_app_id,
-            profile_id=profile_id)
+            profile_id=profile_id,
+            max_inventory_size=max_inventory_size)
 
     return
 
 
 def main(self_test=False,
+         max_inventory_size=None,
          profile_id=None):
     market_app_id = 448720
 
     if self_test:
         market_app_has_been_found = check_whether_items_for_given_app_exist_in_inventory_of_given_user(
             market_app_id=market_app_id,
-            profile_id=profile_id)
+            profile_id=profile_id,
+            max_inventory_size=max_inventory_size)
     else:
-        check_all_asf_bots(market_app_id)
+        check_all_asf_bots(market_app_id,
+                           max_inventory_size=max_inventory_size)
 
     return True
 
