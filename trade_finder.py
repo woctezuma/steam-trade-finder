@@ -5,6 +5,11 @@ from inventory_utils import load_steam_inventory, download_steam_inventory
 from utils import get_bot_listing_file_name
 
 
+def get_profile_url(profile_id):
+    profile_url = 'https://steamcommunity.com/profiles/' + str(profile_id) + '/inventory/#753'
+    return profile_url
+
+
 def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_app_id,
                                                                        profile_id=None,
                                                                        update_steam_inventory=False,
@@ -105,7 +110,9 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
             break
 
     if verbose and market_app_has_been_found:
-        print('Items related to appID={} found in inventory of userID={}'.format(market_app_id, profile_id))
+        print('Items related to appID={} found in inventory of userID={} ({})'.format(market_app_id,
+                                                                                      profile_id,
+                                                                                      get_profile_url(profile_id)))
 
     return market_app_has_been_found
 
