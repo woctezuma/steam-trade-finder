@@ -117,7 +117,7 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
     return market_app_has_been_found
 
 
-def check_all_asf_bots(market_app_id,
+def check_all_asf_bots(market_app_ids,
                        max_inventory_size=50000):
     with open(get_bot_listing_file_name(), 'r') as f:
         lines = f.readlines()
@@ -127,30 +127,32 @@ def check_all_asf_bots(market_app_id,
 
         steam_inventory_file_name = get_steam_inventory_file_name(profile_id)
 
-        market_app_has_been_found = check_whether_items_for_given_app_exist_in_inventory_of_given_user(
-            market_app_id=market_app_id,
-            profile_id=profile_id,
-            max_inventory_size=max_inventory_size)
+        for market_app_id in market_app_ids:
+            market_app_has_been_found = check_whether_items_for_given_app_exist_in_inventory_of_given_user(
+                market_app_id=market_app_id,
+                profile_id=profile_id,
+                max_inventory_size=max_inventory_size)
 
     return
 
 
 def main(self_test=False,
-         market_app_id=None,
+         market_app_ids=None,
          max_inventory_size=None,
          profile_id=None):
-    if market_app_id is None:
+    if market_app_ids is None:
         # App: "Puzzle Box"
         # Reference: https://www.steamcardexchange.net/index.php?gamepage-appid-448720
-        market_app_id = 448720
+        market_app_ids = [448720]
 
     if self_test:
-        market_app_has_been_found = check_whether_items_for_given_app_exist_in_inventory_of_given_user(
-            market_app_id=market_app_id,
-            profile_id=profile_id,
-            max_inventory_size=max_inventory_size)
+        for market_app_id in market_app_ids:
+            market_app_has_been_found = check_whether_items_for_given_app_exist_in_inventory_of_given_user(
+                market_app_id=market_app_id,
+                profile_id=profile_id,
+                max_inventory_size=max_inventory_size)
     else:
-        check_all_asf_bots(market_app_id,
+        check_all_asf_bots(market_app_ids,
                            max_inventory_size=max_inventory_size)
 
     return True
