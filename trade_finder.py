@@ -122,9 +122,11 @@ def check_all_asf_bots(market_app_ids,
     with open(get_bot_listing_file_name(), 'r') as f:
         lines = f.readlines()
 
-    for profile_id_as_str in lines:
-        profile_id = int(profile_id_as_str.strip())
+    profile_ids = set([int(profile_id_as_str.strip())
+                       for profile_id_as_str in lines
+                       if len(profile_id_as_str.strip()) > 0])
 
+    for profile_id in sorted(profile_ids):
         steam_inventory_file_name = get_steam_inventory_file_name(profile_id)
 
         for market_app_id in market_app_ids:
