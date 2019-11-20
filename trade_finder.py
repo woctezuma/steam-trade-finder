@@ -129,6 +129,8 @@ def check_all_asf_bots(market_app_ids,
     for profile_id in sorted(profile_ids):
         steam_inventory_file_name = get_steam_inventory_file_name(profile_id)
 
+        print('Checking inventory of userID={}'.format(profile_id))
+
         for market_app_id in market_app_ids:
             market_app_has_been_found = check_whether_items_for_given_app_exist_in_inventory_of_given_user(
                 market_app_id=market_app_id,
