@@ -109,7 +109,7 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
             market_app_has_been_found = True
             break
 
-    if verbose and market_app_has_been_found:
+    if market_app_has_been_found:
         print('Items related to appID={} found in inventory of userID={} ({})'.format(market_app_id,
                                                                                       profile_id,
                                                                                       get_profile_url(profile_id)))
