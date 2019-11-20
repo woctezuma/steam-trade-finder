@@ -126,6 +126,8 @@ def check_all_asf_bots(market_app_ids,
                        for profile_id_as_str in lines
                        if len(profile_id_as_str.strip()) > 0])
 
+    verbose = bool(len(market_app_ids) == 1)
+
     for profile_id in sorted(profile_ids):
         steam_inventory_file_name = get_steam_inventory_file_name(profile_id)
 
@@ -135,7 +137,8 @@ def check_all_asf_bots(market_app_ids,
             market_app_has_been_found = check_whether_items_for_given_app_exist_in_inventory_of_given_user(
                 market_app_id=market_app_id,
                 profile_id=profile_id,
-                max_inventory_size=max_inventory_size)
+                max_inventory_size=max_inventory_size,
+                verbose=verbose)
 
     return
 
