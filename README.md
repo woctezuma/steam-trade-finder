@@ -9,6 +9,16 @@
 
 This repository contains Python code to find Steam trades for a given appID.
 
+## Introduction
+
+Available automated tools ([STM](https://www.steamtradematcher.com/) and [ASF](https://github.com/JustArchiNET/ArchiSteamFarm/)) look for **good** trades for both sides.
+However, you can be missing out on good trades from your perspective, which would be **neutral** for the other side.
+
+The good news is that if you find such a trade (good for you, neutral for them), and if the other side is using ASF,
+then the trade will be [automatically accepted](https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Trading#steamtradematcher).
+
+The objective of the tool provided in this repository is to ease the search for potentially **neutral** Steam trades.
+
 ## Requirements
 
 -   Install the latest version of [Python 3.X](https://www.python.org/downloads/).
@@ -69,6 +79,7 @@ The default market appID is `448720` for [Puzzle Box](https://www.steamcardexcha
 
 ## References
 
+-   [Wiki: **neutral** Steam trades](https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Trading#steamtradematcher),
 -   [Steam Trade Matcher (STM)](https://www.steamtradematcher.com/),
 -   [Wiki: automated STM based on ArchiSteamFarm (ASF)](https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Statistics#public-asf-stm-listing),
 -   [A public listing of ASF bots](https://asf.justarchi.net/STM).
