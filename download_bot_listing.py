@@ -1,3 +1,5 @@
+# Objective: automatically download the list of userIDs of ASF bots.
+
 import requests
 from bs4 import BeautifulSoup
 

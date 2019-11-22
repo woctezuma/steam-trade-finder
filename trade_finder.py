@@ -1,3 +1,6 @@
+# Objective: find ASF users who own Steam community items (trading card, profile background, emoticon) of a given set,
+#            which could potentially allow us to send them **neutral** Steam trades to complete a set.
+
 import json
 
 from inventory_utils import get_my_steam_profile_id, get_steam_inventory_file_name
