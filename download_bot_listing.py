@@ -100,7 +100,7 @@ def save_bot_listing_to_disk(user_ids,
 
     line_separator = '\n'
 
-    lines = line_separator.join(str(user_id) for user_id in user_ids)
+    lines = line_separator.join(str(user_id) for user_id in sorted(user_ids))
 
     with open(bot_listing_file_name, 'w') as f:
         print(lines, file=f)
