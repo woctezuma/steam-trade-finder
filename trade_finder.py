@@ -3,9 +3,9 @@
 
 import json
 
+from download_bot_listing import load_bot_listing_from_disk, get_trade_offer_url
 from inventory_utils import get_my_steam_profile_id, get_steam_inventory_file_name
 from inventory_utils import load_steam_inventory, download_steam_inventory
-from utils import get_bot_listing_file_name
 
 
 def get_profile_url(profile_id):
@@ -15,11 +15,18 @@ def get_profile_url(profile_id):
 
 def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_app_id,
                                                                        profile_id=None,
+                                                                       profile_trade_offer=None,
                                                                        update_steam_inventory=False,
                                                                        max_inventory_size=None,
                                                                        verbose=True):
     if profile_id is None:
         profile_id = get_my_steam_profile_id()
+
+    if profile_trade_offer is None:
+        trade_offer_url = None
+    else:
+        trade_offer_url = get_trade_offer_url(partner=profile_trade_offer['partner'],
+                                              token=profile_trade_offer['token'])
 
     steam_inventory = load_steam_inventory(profile_id=profile_id,
                                            update_steam_inventory=update_steam_inventory)
@@ -113,20 +120,20 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
             break
 
     if market_app_has_been_found:
-        print('Items related to appID={} found in inventory of userID={} ({})'.format(market_app_id,
-                                                                                      profile_id,
-                                                                                      get_profile_url(profile_id)))
+        print('Items related to appID={} found in inventory of userID={} ({}) ({})'.format(market_app_id,
+                                                                                           profile_id,
+                                                                                           get_profile_url(profile_id),
+                                                                                           trade_offer_url))
 
     return market_app_has_been_found
 
 
 def check_all_asf_bots(market_app_ids,
                        max_inventory_size=50000):
-    with open(get_bot_listing_file_name(), 'r') as f:
-        lines = f.readlines()
+    trade_offers = load_bot_listing_from_disk()
 
     profile_ids = set([int(profile_id_as_str.strip())
-                       for profile_id_as_str in lines
+                       for profile_id_as_str in trade_offers
                        if len(profile_id_as_str.strip()) > 0])
 
     verbose = bool(len(market_app_ids) == 1)
@@ -136,10 +143,13 @@ def check_all_asf_bots(market_app_ids,
 
         print('Checking inventory of userID={}'.format(profile_id))
 
+        profile_trade_offer = trade_offers[str(profile_id)]
+
         for market_app_id in market_app_ids:
             market_app_has_been_found = check_whether_items_for_given_app_exist_in_inventory_of_given_user(
                 market_app_id=market_app_id,
                 profile_id=profile_id,
+                profile_trade_offer=profile_trade_offer,
                 max_inventory_size=max_inventory_size,
                 verbose=verbose)
 
