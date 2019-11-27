@@ -1,5 +1,7 @@
 # Objective: automatically download the list of userIDs of ASF bots.
 
+import json
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -18,6 +20,46 @@ def get_stm_url_prefix():
     return stm_url_prefix
 
 
+def get_steam_trade_offer_url_prefix():
+    steam_trade_offer_url_prefix = 'https://steamcommunity.com/tradeoffer/new'
+
+    return steam_trade_offer_url_prefix
+
+
+def get_trade_parameter_separator():
+    trade_parameter_separator = '&'
+    return trade_parameter_separator
+
+
+def get_trade_partner_prefix():
+    trade_partner_prefix = '?partner='
+    return trade_partner_prefix
+
+
+def get_trade_token_prefix():
+    trade_token_prefix = 'token='
+
+    return trade_token_prefix
+
+
+def get_trade_offer_url(partner, token):
+    partner_info = get_trade_partner_prefix() + str(partner)
+    token_info = get_trade_token_prefix() + str(token)
+
+    trade_offer_url = get_steam_trade_offer_url_prefix() + partner_info + get_trade_parameter_separator() + token_info
+
+    return trade_offer_url
+
+
+def remove_prefix_from_str(input_str, prefix):
+    if input_str.startswith(prefix):
+        url_without_prefix = input_str[len(prefix):]
+    else:
+        url_without_prefix = input_str
+
+    return url_without_prefix
+
+
 def download_bot_listing_as_html(bot_listing_url=None):
     if bot_listing_url is None:
         bot_listing_url = get_bot_listing_url()
@@ -30,29 +72,53 @@ def download_bot_listing_as_html(bot_listing_url=None):
 
 
 def parse_bot_listing(html_doc,
-                      stm_url_prefix=None):
+                      stm_url_prefix=None,
+                      steam_trade_offer_url_prefix=None):
     if stm_url_prefix is None:
         stm_url_prefix = get_stm_url_prefix()
 
+    if steam_trade_offer_url_prefix is None:
+        steam_trade_offer_url_prefix = get_steam_trade_offer_url_prefix()
+
     soup = BeautifulSoup(html_doc, 'html.parser')
 
-    user_ids = set()
+    latest_trade_offer = None
+    trade_offers = dict()
 
     for link in soup.find_all('a'):
         target_url = link.get('href')
 
-        if stm_url_prefix in target_url:
-            user_id_as_str = target_url.strip(stm_url_prefix)
+        # Caveat: the order of the following if-statements matters!
+
+        # First, the URL with the trade token:
+
+        if target_url.startswith(steam_trade_offer_url_prefix):
+            url_without_prefix = remove_prefix_from_str(target_url, steam_trade_offer_url_prefix)
+            steam_trade_offer_params = url_without_prefix.split(get_trade_parameter_separator())
+
+            latest_trade_offer = dict()
+            latest_trade_offer['partner'] = remove_prefix_from_str(steam_trade_offer_params[0],
+                                                                   get_trade_partner_prefix())
+            latest_trade_offer['token'] = remove_prefix_from_str(steam_trade_offer_params[1],
+                                                                 get_trade_token_prefix())
+
+        # Second, the URL with the scan by StreamTradeMatcher:
+
+        if target_url.startswith(stm_url_prefix):
+            user_id_as_str = remove_prefix_from_str(target_url, stm_url_prefix)
 
             user_id = int(user_id_as_str)
 
-            user_ids.add(user_id)
+            trade_offers[user_id] = dict()
+            trade_offers[user_id]['partner'] = latest_trade_offer['partner']
+            trade_offers[user_id]['token'] = latest_trade_offer['token']
 
-    return user_ids
+    return trade_offers
 
 
 def download_and_parse_bot_listing(bot_listing_url=None,
                                    stm_url_prefix=None,
+                                   steam_trade_offer_url_prefix=None,
                                    bot_listing_file_name=None,
                                    save_to_disk=True):
     if bot_listing_url is None:
@@ -61,19 +127,23 @@ def download_and_parse_bot_listing(bot_listing_url=None,
     if stm_url_prefix is None:
         stm_url_prefix = get_stm_url_prefix()
 
+    if steam_trade_offer_url_prefix is None:
+        steam_trade_offer_url_prefix = get_steam_trade_offer_url_prefix()
+
     if bot_listing_file_name is None:
         bot_listing_file_name = get_bot_listing_file_name()
 
     html_doc = download_bot_listing_as_html(bot_listing_url=bot_listing_url)
 
-    user_ids = parse_bot_listing(html_doc,
-                                 stm_url_prefix=stm_url_prefix)
+    latest_trade_offers = parse_bot_listing(html_doc,
+                                            stm_url_prefix=stm_url_prefix,
+                                            steam_trade_offer_url_prefix=steam_trade_offer_url_prefix)
 
     if save_to_disk:
-        update_and_save_bot_listing_to_disk(user_ids,
+        update_and_save_bot_listing_to_disk(latest_trade_offers,
                                             bot_listing_file_name=bot_listing_file_name)
 
-    return user_ids
+    return latest_trade_offers
 
 
 def load_bot_listing_from_disk(bot_listing_file_name=None):
@@ -81,50 +151,47 @@ def load_bot_listing_from_disk(bot_listing_file_name=None):
         bot_listing_file_name = get_bot_listing_file_name()
 
     with open(bot_listing_file_name, 'r') as f:
-        lines = f.readlines()
+        original_trade_offers = json.load(f)
 
-    user_ids = set()
-
-    for user_id_as_str in lines:
-        user_id = int(user_id_as_str.strip())
-
-        user_ids.add(user_id)
-
-    return user_ids
+    return original_trade_offers
 
 
-def save_bot_listing_to_disk(user_ids,
+def save_bot_listing_to_disk(trade_offers,
                              bot_listing_file_name=None):
     if bot_listing_file_name is None:
         bot_listing_file_name = get_bot_listing_file_name()
 
-    line_separator = '\n'
-
-    lines = line_separator.join(str(user_id) for user_id in sorted(user_ids))
-
     with open(bot_listing_file_name, 'w') as f:
-        print(lines, file=f)
+        json.dump(trade_offers, f)
 
     return
 
 
-def update_and_save_bot_listing_to_disk(user_ids,
+def overwrite_trade_offers(original_trade_offers, latest_trade_offers):
+    aggregated_trade_offers = original_trade_offers
+    for user_id in latest_trade_offers:
+        aggregated_trade_offers[user_id] = latest_trade_offers[user_id]
+
+    return aggregated_trade_offers
+
+
+def update_and_save_bot_listing_to_disk(latest_trade_offers,
                                         bot_listing_file_name=None):
     if bot_listing_file_name is None:
         bot_listing_file_name = get_bot_listing_file_name()
 
-    original_user_ids = load_bot_listing_from_disk(bot_listing_file_name=bot_listing_file_name)
+    original_trade_offers = load_bot_listing_from_disk(bot_listing_file_name=bot_listing_file_name)
 
-    aggregated_user_ids = set(original_user_ids).union(user_ids)
+    aggregated_trade_offers = overwrite_trade_offers(original_trade_offers, latest_trade_offers)
 
-    save_bot_listing_to_disk(aggregated_user_ids,
+    save_bot_listing_to_disk(aggregated_trade_offers,
                              bot_listing_file_name=bot_listing_file_name)
 
     return
 
 
 def main():
-    user_ids = download_and_parse_bot_listing()
+    latest_trade_offers = download_and_parse_bot_listing()
 
     return True
 
