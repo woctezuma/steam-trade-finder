@@ -13,7 +13,7 @@ def get_data_folder():
 
 
 def get_bot_listing_file_name():
-    bot_listing_file_name = get_data_folder() + 'asf_bots.txt'
+    bot_listing_file_name = get_data_folder() + 'asf_bots.json'
 
     return bot_listing_file_name
 
