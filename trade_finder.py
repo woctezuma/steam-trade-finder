@@ -104,9 +104,14 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
         if verbose:
             print('Inventory downloaded from the *old* end-point: {}'.format(profile_id))
     except KeyError:
-        descriptions = steam_inventory['descriptions']  # Warning: this is a list.
-        if verbose:
-            print('Inventory downloaded from the *new* end-point: {}'.format(profile_id))
+        try:
+            descriptions = steam_inventory['descriptions']  # Warning: this is a list.
+            if verbose:
+                print('Inventory downloaded from the *new* end-point: {}'.format(profile_id))
+        except KeyError:
+            descriptions = dict()
+            if verbose:
+                print('Inventory without the expected field for descriptions: {}'.format(profile_id))
     except TypeError:
         descriptions = dict()
 
