@@ -79,6 +79,7 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
         query_counter += 1
 
         if steam_inventory_update is None:
+            # Usually due to status code 500 ("Internal Server Error")
             break
 
         try:
