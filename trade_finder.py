@@ -110,6 +110,7 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
             if verbose:
                 print('Inventory downloaded from the *new* end-point: {}'.format(profile_id))
         except KeyError:
+            # Usually due to weird responses like: {'total_inventory_count': 0, 'success': 1, 'rwgrsn': -2}
             descriptions = dict()
             if verbose:
                 print('Inventory without the expected field for descriptions: {}'.format(profile_id))
