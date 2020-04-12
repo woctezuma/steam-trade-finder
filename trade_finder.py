@@ -174,6 +174,25 @@ def main(self_test=False,
         # App: "Puzzle Box"
         # Reference: https://www.steamcardexchange.net/index.php?gamepage-appid-448720
         market_app_ids = [448720]
+        market_app_ids = [
+            381640,  # Allods Online RU
+            342250,  # Aspectus: Rinascimento Chronicles
+            558490,  # Crossroad Mysteries: The Broken Deal
+            318090,  # Dicetiny
+            522340,  # Ghostlords
+            499950,  # Metal Assault - Gigaslave - Europe
+            383690,  # Mu Complex
+            338340,  # Nightbanes
+            523060,  # Planet Smasher
+            448720,  # Puzzle Box
+            554660,  # Puzzle Poker
+            270010,  # Time Rifters
+            521340,  # True or False
+            451230,  # Wartune
+            562260,  # WAVESHAPER
+            403700,  # Zero Punctuation: Hatfall - Hatters Gonna Hat Edition
+            582350,  # Zombie Killin'
+        ]
 
     if self_test:
         for market_app_id in market_app_ids:
