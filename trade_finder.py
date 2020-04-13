@@ -192,6 +192,8 @@ def check_all_asf_bots(market_app_ids,
 
     verbose = bool(len(market_app_ids) == 1)
 
+    results = dict()
+
     for profile_id in sorted(profile_ids):
         steam_inventory_file_name = get_steam_inventory_file_name(profile_id)
 
@@ -206,6 +208,14 @@ def check_all_asf_bots(market_app_ids,
                 profile_trade_offer=profile_trade_offer,
                 max_inventory_size=max_inventory_size,
                 verbose=verbose)
+            if market_app_has_been_found:
+                try:
+                    results[market_app_id].append(profile_id)
+                except KeyError:
+                    results[market_app_id] = list()
+                    results[market_app_id].append(profile_id)
+
+    return results
 
     return
 
@@ -229,8 +239,8 @@ def main(self_test=False,
                 profile_id=profile_id,
                 max_inventory_size=max_inventory_size)
     else:
-        check_all_asf_bots(market_app_ids,
-                           max_inventory_size=max_inventory_size)
+        results = check_all_asf_bots(market_app_ids,
+                                     max_inventory_size=max_inventory_size)
 
     return True
 
