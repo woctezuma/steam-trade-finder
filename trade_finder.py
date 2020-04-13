@@ -8,6 +8,7 @@ from display_results import get_profile_url, display_results_with_markdown
 from download_bot_listing import load_bot_listing_from_disk, get_trade_offer_url
 from inventory_utils import get_my_steam_profile_id, get_steam_inventory_file_name
 from inventory_utils import load_steam_inventory, download_steam_inventory
+from utils import save_to_disk
 
 
 def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_app_id,
@@ -193,6 +194,7 @@ def main(self_test=False,
         results = check_all_asf_bots(market_app_ids,
                                      max_inventory_size=max_inventory_size)
         display_results_with_markdown(results)
+        save_to_disk(results)
 
     return True
 
