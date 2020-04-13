@@ -69,7 +69,10 @@ def display_results_with_markdown(results,
     bot_listing_url = get_bot_listing_url()
     print(bot_listing_url)
 
-    for market_app_id in results:
+    app_ids_sorted_by_app_name = sorted(results,
+                                        key=lambda x: hard_coded_market_dict[str(x)])
+
+    for market_app_id in app_ids_sorted_by_app_name:
         app_name = hard_coded_market_dict[str(market_app_id)]
         steam_card_exchange_url = get_steam_card_exchange_url(market_app_id)
 
@@ -79,7 +82,10 @@ def display_results_with_markdown(results,
         )
         print(header)
 
-        for profile_id in results[market_app_id]:
+        sorted_profile_ids = sorted(results[market_app_id],
+                                    key=lambda x: int(x))
+
+        for profile_id in sorted_profile_ids:
             if str(profile_id) in blacklisted_profile_ids:
                 continue
 
