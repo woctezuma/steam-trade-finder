@@ -217,8 +217,6 @@ def check_all_asf_bots(market_app_ids,
 
     return results
 
-    return
-
 
 def main(self_test=False,
          market_app_ids=None,
