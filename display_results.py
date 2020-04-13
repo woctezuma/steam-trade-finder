@@ -1,5 +1,6 @@
 from data_utils import get_hard_coded_market_dict
 from download_bot_listing import load_bot_listing_from_disk, get_bot_listing_url, get_trade_offer_url
+from utils import load_from_disk
 
 
 def get_steam_card_exchange_url(app_id):
@@ -84,10 +85,15 @@ def display_results_with_markdown(results,
 
 
 def main():
-    results = {
-        '270010': [76561197973009892],
-        '318090': [76561197973009892, 76561198160392629],
-    }
+    try:
+        results = load_from_disk()
+    except FileNotFoundError:
+        print('File not found for current date. Displaying dummy results.')
+
+        results = {
+            '270010': [76561197973009892],
+            '318090': [76561197973009892, 76561198160392629],
+        }
 
     display_results_with_markdown(results)
 
