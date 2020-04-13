@@ -20,10 +20,19 @@ def get_bot_listing_file_name():
     return bot_listing_file_name
 
 
-def get_temp_file_name():
+def get_temp_base_file_name_suffixe():
     temp_file_name = 'temp.json'
 
     return temp_file_name
+
+
+def get_temp_base_file_name():
+    temp_base_file_name = '{}_{}'.format(
+        get_current_day_as_str(),
+        get_temp_base_file_name_suffixe(),
+    )
+
+    return temp_base_file_name
 
 
 def get_current_day_as_str():
@@ -33,14 +42,11 @@ def get_current_day_as_str():
 
 
 def save_to_disk(data,
-                 output_base_file_name=None):
-    if output_base_file_name is None:
-        output_base_file_name = '{}_{}'.format(
-            get_current_day_as_str(),
-            get_temp_file_name(),
-        )
+                 base_file_name=None):
+    if base_file_name is None:
+        base_file_name = get_temp_base_file_name()
 
-    output_file_name = get_data_folder() + output_base_file_name
+    output_file_name = get_data_folder() + base_file_name
 
     with open(output_file_name, 'w') as f:
         json.dump(data, f)
