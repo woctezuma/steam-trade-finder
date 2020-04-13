@@ -65,6 +65,9 @@ def display_results_with_markdown(results,
     my_profile_id = get_my_profile_id()
     my_profile_id_as_str = str(my_profile_id)
     blacklisted_profile_ids.append(my_profile_id_as_str)
+    print('Black-listed profiles: {}'.format(
+        blacklisted_profile_ids)
+    )
 
     bot_listing_url = get_bot_listing_url()
     print(bot_listing_url)
