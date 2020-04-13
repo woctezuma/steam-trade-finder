@@ -1,3 +1,9 @@
+def get_my_profile_id():
+    my_profile_id = '76561198028705366'
+
+    return my_profile_id
+
+
 def get_hard_coded_market_dict():
     hard_coded_market_dict = {
         "340390": "Abomination Tower",

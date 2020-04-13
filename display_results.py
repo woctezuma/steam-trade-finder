@@ -1,4 +1,4 @@
-from data_utils import get_hard_coded_market_dict
+from data_utils import get_hard_coded_market_dict, get_my_profile_id
 from download_bot_listing import load_bot_listing_from_disk, get_bot_listing_url, get_trade_offer_url
 from utils import load_from_disk
 
@@ -50,12 +50,21 @@ def get_offer_markdown(profile_id,
 
 def display_results_with_markdown(results,
                                   hard_coded_market_dict=None,
+                                  blacklisted_profile_ids=None,
                                   trade_offers=None):
     if hard_coded_market_dict is None:
         hard_coded_market_dict = get_hard_coded_market_dict()
 
     if trade_offers is None:
         trade_offers = load_bot_listing_from_disk()
+
+    if blacklisted_profile_ids is None:
+        blacklisted_profile_ids = []
+
+    # Blacklist my own profile id, because I cannot trade with myself:
+    my_profile_id = get_my_profile_id()
+    my_profile_id_as_str = str(my_profile_id)
+    blacklisted_profile_ids.append(my_profile_id_as_str)
 
     bot_listing_url = get_bot_listing_url()
     print(bot_listing_url)
@@ -71,6 +80,9 @@ def display_results_with_markdown(results,
         print(header)
 
         for profile_id in results[market_app_id]:
+            if str(profile_id) in blacklisted_profile_ids:
+                continue
+
             user_markdown = get_user_markdown(profile_id)
             offer_markdown = get_offer_markdown(profile_id,
                                                 trade_offers=trade_offers)
