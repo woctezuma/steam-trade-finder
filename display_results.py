@@ -13,6 +13,40 @@ def get_profile_url(profile_id):
     return profile_url
 
 
+def get_user_markdown(profile_id):
+    steam_community_url = get_profile_url(profile_id)
+
+    user_markdown = '[userID={}]({})'.format(
+        profile_id,
+        steam_community_url,
+    )
+
+    return user_markdown
+
+
+def get_offer_markdown(profile_id,
+                       trade_offers=None):
+    if trade_offers is None:
+        trade_offers = load_bot_listing_from_disk()
+
+    profile_trade_offer = trade_offers[str(profile_id)]
+
+    partner = profile_trade_offer['partner']
+    token = profile_trade_offer['token']
+
+    if partner is not None and token is not None:
+        trade_offer_url = get_trade_offer_url(partner=partner,
+                                              token=token)
+
+        offer_markdown = '[offer]({})'.format(
+            trade_offer_url,
+        )
+    else:
+        offer_markdown = ''
+
+    return offer_markdown
+
+
 def display_results_with_markdown(results,
                                   hard_coded_market_dict=None,
                                   trade_offers=None):
@@ -36,16 +70,13 @@ def display_results_with_markdown(results,
         print(header)
 
         for profile_id in results[market_app_id]:
-            profile_trade_offer = trade_offers[str(profile_id)]
+            user_markdown = get_user_markdown(profile_id)
+            offer_markdown = get_offer_markdown(profile_id,
+                                                trade_offers=trade_offers)
 
-            steam_community_url = get_profile_url(profile_id)
-            trade_offer_url = get_trade_offer_url(partner=profile_trade_offer['partner'],
-                                                  token=profile_trade_offer['token'])
-
-            line = '1.   [userID={}]({}) [offer]({})'.format(
-                profile_id,
-                steam_community_url,
-                trade_offer_url,
+            line = '1.   {} {}'.format(
+                user_markdown,
+                offer_markdown,
             )
             print(line)
 
