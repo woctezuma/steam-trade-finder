@@ -48,10 +48,26 @@ def get_hard_coded_market_dict():
     return hard_coded_market_dict
 
 
+def sort_dict_by_value(input_dictionary):
+    # Reference: https://stackoverflow.com/a/613218
+
+    sorted_dictionary = {
+        k: v
+        for k, v in sorted(
+            input_dictionary.items(),
+            key=lambda item: item[1],
+        )
+    }
+
+    return sorted_dictionary
+
+
 def main():
     hard_coded_market_dict = get_hard_coded_market_dict()
 
-    print(hard_coded_market_dict)
+    sorted_dictionary = sort_dict_by_value(hard_coded_market_dict)
+
+    print(sorted_dictionary)
 
     return True
 
