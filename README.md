@@ -32,7 +32,7 @@ pip install -r requirements.txt
 
 ### Download the list of userIDs of ASF bots
 
-The objective is to obtain a list of userIDs of ASF bots, as found in [`data/asf_bots.txt`](data/asf_bots.txt).
+The objective is to obtain a list of userIDs of ASF bots, as found in [`data/asf_bots.json`](data/asf_bots.json).
 
 #### Automatic process
 
