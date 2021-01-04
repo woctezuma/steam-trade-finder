@@ -44,6 +44,8 @@ python download_bot_listing.py
 
 #### Manual process
 
+#### HTML
+
 Alternatively, one could manually download the HTML code from [a public listing of ASF bots](https://asf.justarchi.net/STM).
 Then edit it as follows, using for instance Visual Studio Code, with regular expressions allowed: 
 
@@ -67,6 +69,10 @@ Then edit it as follows, using for instance Visual Studio Code, with regular exp
 \n+
 ```
 
+#### JSON
+
+Alternatively, one could manually download data as JSON from the [official API for the public listing ASF bots][api-for-asf-bots].
+
 ### Find Steam trades
 
 Run the following script to find Steam trades:
@@ -83,7 +89,7 @@ The default market appID is `448720` for [Puzzle Box](https://www.steamcardexcha
 -   [Steam Trade Matcher (STM)](https://www.steamtradematcher.com/),
 -   [Wiki: automated STM based on ArchiSteamFarm (ASF)](https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Statistics#public-asf-stm-listing),
 -   [A public listing of ASF bots](https://asf.justarchi.net/STM).
-
+-   [Official API for the public listing ASF bots][api-for-asf-bots]
 
 <!-- Definitions -->
 
@@ -100,3 +106,4 @@ The default market appID is `448720` for [Puzzle Box](https://www.steamcardexcha
 [codacy]: <https://www.codacy.com/app/woctezuma/steam-trade-finder>
 [codacy-image]: <https://api.codacy.com/project/badge/Grade/038afb64dd404f8f978ff8ba41b65aef>
 
+[api-for-asf-bots]: <https://asf.justarchi.net/Api/Bots>
