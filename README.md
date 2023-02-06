@@ -91,8 +91,8 @@ The default market appID is `448720` for [Puzzle Box](https://www.steamcardexcha
 
 <!-- Definitions -->
 
-[build]: <https://travis-ci.org/woctezuma/steam-trade-finder>
-[build-image]: <https://travis-ci.org/woctezuma/steam-trade-finder.svg?branch=master>
+[build]: <https://github.com/woctezuma/steam-trade-finder/actions>
+[build-image]: <https://github.com/woctezuma/steam-trade-finder/workflows/Python package/badge.svg?branch=master>
 
 [pyup]: <https://pyup.io/repos/github/woctezuma/steam-trade-finder/>
 [dependency-image]: <https://pyup.io/repos/github/woctezuma/steam-trade-finder/shield.svg>
