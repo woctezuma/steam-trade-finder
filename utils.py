@@ -41,8 +41,7 @@ def get_current_day_as_str():
     return current_day_as_str
 
 
-def save_to_disk(data,
-                 base_file_name=None):
+def save_to_disk(data, base_file_name=None):
     if base_file_name is None:
         base_file_name = get_temp_base_file_name()
 

@@ -11,23 +11,29 @@ from inventory_utils import load_steam_inventory, download_steam_inventory
 from utils import save_to_disk
 
 
-def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_app_id,
-                                                                       profile_id=None,
-                                                                       profile_trade_offer=None,
-                                                                       update_steam_inventory=False,
-                                                                       max_inventory_size=None,
-                                                                       verbose=True):
+def check_whether_items_for_given_app_exist_in_inventory_of_given_user(
+    market_app_id,
+    profile_id=None,
+    profile_trade_offer=None,
+    update_steam_inventory=False,
+    max_inventory_size=None,
+    verbose=True,
+):
     if profile_id is None:
         profile_id = get_my_steam_profile_id()
 
     if profile_trade_offer is None:
         trade_offer_url = None
     else:
-        trade_offer_url = get_trade_offer_url(partner=profile_trade_offer['partner'],
-                                              token=profile_trade_offer['token'])
+        trade_offer_url = get_trade_offer_url(
+            partner=profile_trade_offer['partner'],
+            token=profile_trade_offer['token'],
+        )
 
-    steam_inventory = load_steam_inventory(profile_id=profile_id,
-                                           update_steam_inventory=update_steam_inventory)
+    steam_inventory = load_steam_inventory(
+        profile_id=profile_id,
+        update_steam_inventory=update_steam_inventory,
+    )
 
     try:
         total_inventory_count = steam_inventory['total_inventory_count']
@@ -45,34 +51,47 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
         last_asset_id = None
 
     # Reference: https://steamcommunity.com/discussions/forum/1/1736595227843280036/
-    num_inventory_items_per_query = 5000  # value corresponding to the new API end-point. Not chosen by the user!
+    num_inventory_items_per_query = (
+        5000  # value corresponding to the new API end-point. Not chosen by the user!
+    )
 
     query_counter = 0
 
     while last_asset_id is not None:
-        print('Downloading additional data for userID {} (total inventory count = {}) starting from assetID {}.'.format(
-            profile_id,
-            total_inventory_count,
-            last_asset_id,
-        ))
+        print(
+            'Downloading additional data for userID {} (total inventory count = {}) starting from assetID {}.'.format(
+                profile_id,
+                total_inventory_count,
+                last_asset_id,
+            ),
+        )
 
         if total_inventory_count < 0:
-            print('Total inventory count unknown ({}). Exiting the query loop.'.format(
-                total_inventory_count
-            ))
+            print(
+                'Total inventory count unknown ({}). Exiting the query loop.'.format(
+                    total_inventory_count,
+                ),
+            )
             break
 
-        if max_inventory_size is not None and (query_counter * num_inventory_items_per_query) >= max_inventory_size:
-            print('Total inventory count is large ({}). Exiting the query loop after {} queries of {} items.'.format(
-                total_inventory_count,
-                query_counter,
-                num_inventory_items_per_query
-            ))
+        if (
+            max_inventory_size is not None
+            and (query_counter * num_inventory_items_per_query) >= max_inventory_size
+        ):
+            print(
+                'Total inventory count is large ({}). Exiting the query loop after {} queries of {} items.'.format(
+                    total_inventory_count,
+                    query_counter,
+                    num_inventory_items_per_query,
+                ),
+            )
             break
 
-        steam_inventory_update = download_steam_inventory(profile_id=profile_id,
-                                                          save_to_disk=False,
-                                                          start_asset_id=last_asset_id)
+        steam_inventory_update = download_steam_inventory(
+            profile_id=profile_id,
+            save_to_disk=False,
+            start_asset_id=last_asset_id,
+        )
 
         query_counter += 1
 
@@ -99,19 +118,31 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
             json.dump(steam_inventory, f)
 
     try:
-        descriptions = steam_inventory['rgDescriptions']  # Warning: this is a dictionary.
+        descriptions = steam_inventory[
+            'rgDescriptions'
+        ]  # Warning: this is a dictionary.
         if verbose:
-            print('Inventory downloaded from the *old* end-point: {}'.format(profile_id))
+            print(
+                'Inventory downloaded from the *old* end-point: {}'.format(profile_id),
+            )
     except KeyError:
         try:
             descriptions = steam_inventory['descriptions']  # Warning: this is a list.
             if verbose:
-                print('Inventory downloaded from the *new* end-point: {}'.format(profile_id))
+                print(
+                    'Inventory downloaded from the *new* end-point: {}'.format(
+                        profile_id,
+                    ),
+                )
         except KeyError:
             # Usually due to weird responses like: {'total_inventory_count': 0, 'success': 1, 'rwgrsn': -2}
             descriptions = dict()
             if verbose:
-                print('Inventory without the expected field for descriptions: {}'.format(profile_id))
+                print(
+                    'Inventory without the expected field for descriptions: {}'.format(
+                        profile_id,
+                    ),
+                )
     except TypeError:
         descriptions = dict()
 
@@ -128,21 +159,28 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(market_ap
             break
 
     if market_app_has_been_found:
-        print('Items related to appID={} found in inventory of userID={} ({}) ({})'.format(market_app_id,
-                                                                                           profile_id,
-                                                                                           get_profile_url(profile_id),
-                                                                                           trade_offer_url))
+        print(
+            'Items related to appID={} found in inventory of userID={} ({}) ({})'.format(
+                market_app_id,
+                profile_id,
+                get_profile_url(profile_id),
+                trade_offer_url,
+            ),
+        )
 
     return market_app_has_been_found
 
 
-def check_all_asf_bots(market_app_ids,
-                       max_inventory_size=50000):
+def check_all_asf_bots(market_app_ids, max_inventory_size=50000):
     trade_offers = load_bot_listing_from_disk()
 
-    profile_ids = set([int(profile_id_as_str.strip())
-                       for profile_id_as_str in trade_offers
-                       if len(profile_id_as_str.strip()) > 0])
+    profile_ids = set(
+        [
+            int(profile_id_as_str.strip())
+            for profile_id_as_str in trade_offers
+            if len(profile_id_as_str.strip()) > 0
+        ],
+    )
 
     verbose = bool(len(market_app_ids) == 1)
 
@@ -156,12 +194,15 @@ def check_all_asf_bots(market_app_ids,
         profile_trade_offer = trade_offers[str(profile_id)]
 
         for market_app_id in market_app_ids:
-            market_app_has_been_found = check_whether_items_for_given_app_exist_in_inventory_of_given_user(
-                market_app_id=market_app_id,
-                profile_id=profile_id,
-                profile_trade_offer=profile_trade_offer,
-                max_inventory_size=max_inventory_size,
-                verbose=verbose)
+            market_app_has_been_found = (
+                check_whether_items_for_given_app_exist_in_inventory_of_given_user(
+                    market_app_id=market_app_id,
+                    profile_id=profile_id,
+                    profile_trade_offer=profile_trade_offer,
+                    max_inventory_size=max_inventory_size,
+                    verbose=verbose,
+                )
+            )
             if market_app_has_been_found:
                 try:
                     results[market_app_id].append(profile_id)
@@ -172,27 +213,32 @@ def check_all_asf_bots(market_app_ids,
     return results
 
 
-def main(self_test=False,
-         market_app_ids=None,
-         max_inventory_size=None,
-         profile_id=None):
+def main(
+    self_test=False,
+    market_app_ids=None,
+    max_inventory_size=None,
+    profile_id=None,
+):
     if market_app_ids is None:
         # App: "Puzzle Box"
         # Reference: https://www.steamcardexchange.net/index.php?gamepage-appid-448720
         market_app_ids = [448720]
-        market_app_ids = [
-            int(app_id) for app_id in get_hard_coded_market_dict()
-        ]
+        market_app_ids = [int(app_id) for app_id in get_hard_coded_market_dict()]
 
     if self_test:
         for market_app_id in market_app_ids:
-            market_app_has_been_found = check_whether_items_for_given_app_exist_in_inventory_of_given_user(
-                market_app_id=market_app_id,
-                profile_id=profile_id,
-                max_inventory_size=max_inventory_size)
+            market_app_has_been_found = (
+                check_whether_items_for_given_app_exist_in_inventory_of_given_user(
+                    market_app_id=market_app_id,
+                    profile_id=profile_id,
+                    max_inventory_size=max_inventory_size,
+                )
+            )
     else:
-        results = check_all_asf_bots(market_app_ids,
-                                     max_inventory_size=max_inventory_size)
+        results = check_all_asf_bots(
+            market_app_ids,
+            max_inventory_size=max_inventory_size,
+        )
         display_results_with_markdown(results)
         save_to_disk(results)
 

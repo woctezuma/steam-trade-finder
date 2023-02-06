@@ -25,8 +25,7 @@ def load_steam_cookie_from_disk(file_name_with_personal_info=None):
     return cookie
 
 
-def save_steam_cookie_to_disk(cookie,
-                              file_name_with_personal_info=None):
+def save_steam_cookie_to_disk(cookie, file_name_with_personal_info=None):
     if file_name_with_personal_info is None:
         file_name_with_personal_info = get_steam_cookie_file_name()
 
@@ -49,9 +48,7 @@ def get_cookie_dict(verbose=False):
     return cookie
 
 
-def update_cookie_dict(original_cookie,
-                       dict_with_new_values,
-                       verbose=False):
+def update_cookie_dict(original_cookie, dict_with_new_values, verbose=False):
     cookie = original_cookie
 
     for field in dict_with_new_values.keys():
@@ -59,7 +56,13 @@ def update_cookie_dict(original_cookie,
         new_value = dict_with_new_values[field]
 
         if new_value != current_value:
-            print('Updating value for cookie field {} from {} to {}.'.format(field, current_value, new_value))
+            print(
+                'Updating value for cookie field {} from {} to {}.'.format(
+                    field,
+                    current_value,
+                    new_value,
+                ),
+            )
             cookie[field] = new_value
 
     if verbose:
@@ -69,11 +72,13 @@ def update_cookie_dict(original_cookie,
     return cookie
 
 
-def update_and_save_cookie_to_disk_if_values_changed(cookie,
-                                                     dict_with_new_values,
-                                                     fields=None,
-                                                     file_name_with_personal_info=None,
-                                                     verbose=False):
+def update_and_save_cookie_to_disk_if_values_changed(
+    cookie,
+    dict_with_new_values,
+    fields=None,
+    file_name_with_personal_info=None,
+    verbose=False,
+):
     if fields is None:
         fields = ['steamLoginSecure', 'sessionid']
 
@@ -81,15 +86,21 @@ def update_and_save_cookie_to_disk_if_values_changed(cookie,
     relevant_fields = relevant_fields.intersection(cookie.keys())
     relevant_fields = relevant_fields.intersection(dict_with_new_values.keys())
 
-    is_cookie_to_be_updated = any([dict_with_new_values[field] != cookie[field] for field in relevant_fields])
+    is_cookie_to_be_updated = any(
+        [dict_with_new_values[field] != cookie[field] for field in relevant_fields],
+    )
 
     if is_cookie_to_be_updated:
-        cookie = update_cookie_dict(original_cookie=cookie,
-                                    dict_with_new_values=dict_with_new_values,
-                                    verbose=verbose)
+        cookie = update_cookie_dict(
+            original_cookie=cookie,
+            dict_with_new_values=dict_with_new_values,
+            verbose=verbose,
+        )
 
-        is_cookie_to_be_saved = save_steam_cookie_to_disk(cookie=cookie,
-                                                          file_name_with_personal_info=file_name_with_personal_info)
+        is_cookie_to_be_saved = save_steam_cookie_to_disk(
+            cookie=cookie,
+            file_name_with_personal_info=file_name_with_personal_info,
+        )
 
     return cookie
 
