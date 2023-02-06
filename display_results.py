@@ -1,15 +1,15 @@
 from data_utils import get_hard_coded_market_dict, get_my_profile_id
 from download_bot_listing import (
-    load_bot_listing_from_disk,
     get_bot_listing_url,
     get_trade_offer_url,
+    load_bot_listing_from_disk,
 )
 from utils import load_from_disk
 
 
 def get_steam_card_exchange_url(app_id):
     steam_card_exchange_url = (
-        'https://www.steamcardexchange.net/index.php?gamepage-appid-{}'.format(app_id)
+        f'https://www.steamcardexchange.net/index.php?gamepage-appid-{app_id}'
     )
 
     return steam_card_exchange_url
@@ -73,7 +73,7 @@ def display_results_with_markdown(
     my_profile_id = get_my_profile_id()
     my_profile_id_as_str = str(my_profile_id)
     blacklisted_profile_ids.append(my_profile_id_as_str)
-    print('Black-listed profiles: {}'.format(blacklisted_profile_ids))
+    print(f'Black-listed profiles: {blacklisted_profile_ids}')
 
     bot_listing_url = get_bot_listing_url()
     print(bot_listing_url)

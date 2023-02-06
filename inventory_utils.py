@@ -49,7 +49,7 @@ def load_steam_inventory_from_disk(profile_id=None):
         profile_id = get_my_steam_profile_id()
 
     try:
-        with open(get_steam_inventory_file_name(profile_id), 'r') as f:
+        with open(get_steam_inventory_file_name(profile_id)) as f:
             steam_inventory = json.load(f)
     except (FileNotFoundError, json.decoder.JSONDecodeError) as e:
         steam_inventory = download_steam_inventory(profile_id, save_to_disk=True)
@@ -78,10 +78,10 @@ def download_steam_inventory(profile_id=None, save_to_disk=True, start_asset_id=
 
     url = get_steam_inventory_url(profile_id=profile_id)
 
-    req_data = dict(
-        l='english',  # noqa: E741
-        count=5000,
-    )  # TODO
+    req_data = {
+        "l": 'english',
+        "count": 5000,
+    }  # TODO
 
     if start_asset_id is not None:
         req_data['start_assetid'] = start_asset_id  # TODO

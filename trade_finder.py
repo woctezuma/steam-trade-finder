@@ -4,10 +4,14 @@
 import json
 
 from data_utils import get_hard_coded_market_dict
-from display_results import get_profile_url, display_results_with_markdown
-from download_bot_listing import load_bot_listing_from_disk, get_trade_offer_url
-from inventory_utils import get_my_steam_profile_id, get_steam_inventory_file_name
-from inventory_utils import load_steam_inventory, download_steam_inventory
+from display_results import display_results_with_markdown, get_profile_url
+from download_bot_listing import get_trade_offer_url, load_bot_listing_from_disk
+from inventory_utils import (
+    download_steam_inventory,
+    get_my_steam_profile_id,
+    get_steam_inventory_file_name,
+    load_steam_inventory,
+)
 from utils import save_to_disk
 
 
@@ -123,7 +127,7 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(
         ]  # Warning: this is a dictionary.
         if verbose:
             print(
-                'Inventory downloaded from the *old* end-point: {}'.format(profile_id),
+                f'Inventory downloaded from the *old* end-point: {profile_id}',
             )
     except KeyError:
         try:
@@ -136,7 +140,7 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(
                 )
         except KeyError:
             # Usually due to weird responses like: {'total_inventory_count': 0, 'success': 1, 'rwgrsn': -2}
-            descriptions = dict()
+            descriptions = {}
             if verbose:
                 print(
                     'Inventory without the expected field for descriptions: {}'.format(
@@ -144,7 +148,7 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(
                     ),
                 )
     except TypeError:
-        descriptions = dict()
+        descriptions = {}
 
     market_app_has_been_found = False
 
@@ -174,22 +178,20 @@ def check_whether_items_for_given_app_exist_in_inventory_of_given_user(
 def check_all_asf_bots(market_app_ids, max_inventory_size=50000):
     trade_offers = load_bot_listing_from_disk()
 
-    profile_ids = set(
-        [
-            int(profile_id_as_str.strip())
-            for profile_id_as_str in trade_offers
-            if len(profile_id_as_str.strip()) > 0
-        ],
-    )
+    profile_ids = {
+        int(profile_id_as_str.strip())
+        for profile_id_as_str in trade_offers
+        if len(profile_id_as_str.strip()) > 0
+    }
 
     verbose = bool(len(market_app_ids) == 1)
 
-    results = dict()
+    results = {}
 
     for profile_id in sorted(profile_ids):
         steam_inventory_file_name = get_steam_inventory_file_name(profile_id)
 
-        print('Checking inventory of userID={}'.format(profile_id))
+        print(f'Checking inventory of userID={profile_id}')
 
         profile_trade_offer = trade_offers[str(profile_id)]
 
@@ -207,7 +209,7 @@ def check_all_asf_bots(market_app_ids, max_inventory_size=50000):
                 try:
                     results[market_app_id].append(profile_id)
                 except KeyError:
-                    results[market_app_id] = list()
+                    results[market_app_id] = []
                     results[market_app_id].append(profile_id)
 
     return results

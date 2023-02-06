@@ -86,7 +86,7 @@ def parse_bot_listing(html_doc, stm_url_prefix=None, steam_trade_offer_url_prefi
     soup = BeautifulSoup(html_doc, 'html.parser')
 
     latest_trade_offer = None
-    trade_offers = dict()
+    trade_offers = {}
 
     for link in soup.find_all('a'):
         target_url = link.get('href')
@@ -104,7 +104,7 @@ def parse_bot_listing(html_doc, stm_url_prefix=None, steam_trade_offer_url_prefi
                 get_trade_parameter_separator(),
             )
 
-            latest_trade_offer = dict()
+            latest_trade_offer = {}
             latest_trade_offer['partner'] = remove_prefix_from_str(
                 steam_trade_offer_params[0],
                 get_trade_partner_prefix(),
@@ -121,7 +121,7 @@ def parse_bot_listing(html_doc, stm_url_prefix=None, steam_trade_offer_url_prefi
 
             user_id = int(user_id_as_str)
 
-            trade_offers[user_id] = dict()
+            trade_offers[user_id] = {}
             trade_offers[user_id]['partner'] = latest_trade_offer['partner']
             trade_offers[user_id]['token'] = latest_trade_offer['token']
 
@@ -168,7 +168,7 @@ def load_bot_listing_from_disk(bot_listing_file_name=None):
     if bot_listing_file_name is None:
         bot_listing_file_name = get_bot_listing_file_name()
 
-    with open(bot_listing_file_name, 'r') as f:
+    with open(bot_listing_file_name) as f:
         original_trade_offers = json.load(f)
 
     return original_trade_offers

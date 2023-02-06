@@ -59,7 +59,7 @@ def load_from_disk(base_file_name=None):
 
     input_file_name = get_data_folder() + base_file_name
 
-    with open(input_file_name, 'r') as f:
+    with open(input_file_name) as f:
         data = json.load(f)
 
     return data

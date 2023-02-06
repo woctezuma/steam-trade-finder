@@ -17,10 +17,10 @@ def load_steam_cookie_from_disk(file_name_with_personal_info=None):
         file_name_with_personal_info = get_steam_cookie_file_name()
 
     try:
-        with open(file_name_with_personal_info, 'r') as f:
+        with open(file_name_with_personal_info) as f:
             cookie = json.load(f)
     except FileNotFoundError:
-        cookie = dict()
+        cookie = {}
 
     return cookie
 
@@ -42,8 +42,8 @@ def get_cookie_dict(verbose=False):
     cookie = load_steam_cookie_from_disk()
 
     if verbose:
-        for field in cookie.keys():
-            print('{}: {}'.format(field, cookie[field]))
+        for field in cookie:
+            print(f'{field}: {cookie[field]}')
 
     return cookie
 
@@ -51,7 +51,7 @@ def get_cookie_dict(verbose=False):
 def update_cookie_dict(original_cookie, dict_with_new_values, verbose=False):
     cookie = original_cookie
 
-    for field in dict_with_new_values.keys():
+    for field in dict_with_new_values:
         current_value = cookie[field]
         new_value = dict_with_new_values[field]
 
@@ -66,8 +66,8 @@ def update_cookie_dict(original_cookie, dict_with_new_values, verbose=False):
             cookie[field] = new_value
 
     if verbose:
-        for field in cookie.keys():
-            print('{}: {}'.format(field, cookie[field]))
+        for field in cookie:
+            print(f'{field}: {cookie[field]}')
 
     return cookie
 
