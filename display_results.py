@@ -35,7 +35,7 @@ def get_user_markdown(profile_id):
 
 def get_offer_markdown(profile_id, trade_offers=None):
     if trade_offers is None:
-        trade_offers = load_bot_listing_from_disk()
+        trade_offers = load_bot_listing_from_disk('data/asf_bots.test.json')
 
     profile_trade_offer = trade_offers[str(profile_id)]
 
@@ -64,7 +64,7 @@ def display_results_with_markdown(
         hard_coded_market_dict = get_hard_coded_market_dict()
 
     if trade_offers is None:
-        trade_offers = load_bot_listing_from_disk()
+        trade_offers = load_bot_listing_from_disk('data/asf_bots.test.json')
 
     if blacklisted_profile_ids is None:
         blacklisted_profile_ids = []
