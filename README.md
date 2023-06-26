@@ -1,6 +1,5 @@
 # Steam Trade Finder
 
-
 [![Build status][build-image]][build]
 [![Code coverage][codecov-image]][codecov]
 [![Code Quality][codacy-image]][codacy]
@@ -19,8 +18,8 @@ The objective of the tool provided in this repository is to ease the search for 
 
 ## Requirements
 
--   Install the latest version of [Python 3.X](https://www.python.org/downloads/).
--   Install the required packages:
+- Install the latest version of [Python 3.X](https://www.python.org/downloads/).
+- Install the required packages:
 
 ```bash
 pip install -r requirements.txt
@@ -45,24 +44,28 @@ python download_bot_listing.py
 #### HTML
 
 Alternatively, one could manually download the HTML code from [a public listing of ASF bots](https://asf.justarchi.net/STM).
-Then edit it as follows, using for instance Visual Studio Code, with regular expressions allowed: 
+Then edit it as follows, using for instance Visual Studio Code, with regular expressions allowed:
 
-1. Remove HTML lines [which do not contain the word]((https://stackoverflow.com/a/7024359)) "steamtradematcher":
+1. Remove HTML lines [which do not contain the word](https://stackoverflow.com/a/7024359) "steamtradematcher":
+
 ```regexp
 ^(?!.*steamtradematcher.*).+$
 ```
 
 2. Trim the beginning of lines:
+
 ```regexp
 ^.*/specscan/
 ```
 
 3. Trim the end of lines:
+
 ```regexp
 " target.*$
 ```
 
 4. Replace the following with `\n`, in order to remove empty lines:
+
 ```regexp
 \n+
 ```
@@ -83,25 +86,21 @@ The default market appID is `448720` for [Puzzle Box](https://www.steamcardexcha
 
 ## References
 
--   [Wiki: **neutral** Steam trades](https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Trading#steamtradematcher),
--   [Steam Trade Matcher (STM)](https://www.steamtradematcher.com/),
--   [Wiki: automated STM based on ArchiSteamFarm (ASF)](https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Statistics#public-asf-stm-listing),
--   [A public listing of ASF bots](https://asf.justarchi.net/STM).
--   [Official API for the public listing ASF bots][api-for-asf-bots]
+- [Wiki: **neutral** Steam trades](https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Trading#steamtradematcher),
+- [Steam Trade Matcher (STM)](https://www.steamtradematcher.com/),
+- [Wiki: automated STM based on ArchiSteamFarm (ASF)](https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Statistics#public-asf-stm-listing),
+- [A public listing of ASF bots](https://asf.justarchi.net/STM).
+- [Official API for the public listing ASF bots][api-for-asf-bots]
 
 <!-- Definitions -->
 
-[build]: <https://github.com/woctezuma/steam-trade-finder/actions>
+[build]: https://github.com/woctezuma/steam-trade-finder/actions
 [build-image]: <https://github.com/woctezuma/steam-trade-finder/workflows/Python package/badge.svg?branch=master>
-
-[pyup]: <https://pyup.io/repos/github/woctezuma/steam-trade-finder/>
-[dependency-image]: <https://pyup.io/repos/github/woctezuma/steam-trade-finder/shield.svg>
-[python3-image]: <https://pyup.io/repos/github/woctezuma/steam-trade-finder/python-3-shield.svg>
-
-[codecov]: <https://codecov.io/gh/woctezuma/steam-trade-finder>
-[codecov-image]: <https://codecov.io/gh/woctezuma/steam-trade-finder/branch/master/graph/badge.svg>
-
-[codacy]: <https://www.codacy.com/app/woctezuma/steam-trade-finder>
-[codacy-image]: <https://api.codacy.com/project/badge/Grade/038afb64dd404f8f978ff8ba41b65aef>
-
-[api-for-asf-bots]: <https://asf.justarchi.net/Api/Bots>
+[pyup]: https://pyup.io/repos/github/woctezuma/steam-trade-finder/
+[dependency-image]: https://pyup.io/repos/github/woctezuma/steam-trade-finder/shield.svg
+[python3-image]: https://pyup.io/repos/github/woctezuma/steam-trade-finder/python-3-shield.svg
+[codecov]: https://codecov.io/gh/woctezuma/steam-trade-finder
+[codecov-image]: https://codecov.io/gh/woctezuma/steam-trade-finder/branch/master/graph/badge.svg
+[codacy]: https://www.codacy.com/app/woctezuma/steam-trade-finder
+[codacy-image]: https://api.codacy.com/project/badge/Grade/038afb64dd404f8f978ff8ba41b65aef
+[api-for-asf-bots]: https://asf.justarchi.net/Api/Listing/Bots

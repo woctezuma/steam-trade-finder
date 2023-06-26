@@ -1,0 +1,6 @@
+[tool.black]
+skip-string-normalization = true
+
+[tool.pytest.ini_options]
+# addopts = "--cov=./ --cov-report=html"
+python_files = "tests.py"

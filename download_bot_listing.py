@@ -117,9 +117,7 @@ def parse_bot_listing(html_doc, stm_url_prefix=None, steam_trade_offer_url_prefi
         # Second, the URL with the scan by StreamTradeMatcher:
 
         if target_url.startswith(stm_url_prefix):
-            user_id_as_str = remove_prefix_from_str(target_url, stm_url_prefix)
-
-            user_id = int(user_id_as_str)
+            user_id = remove_prefix_from_str(target_url, stm_url_prefix)
 
             trade_offers[user_id] = {}
             trade_offers[user_id]['partner'] = latest_trade_offer['partner']
@@ -168,10 +166,13 @@ def load_bot_listing_from_disk(bot_listing_file_name=None):
     if bot_listing_file_name is None:
         bot_listing_file_name = get_bot_listing_file_name()
 
-    with open(bot_listing_file_name) as f:
-        original_trade_offers = json.load(f)
+    try:
+        with open(bot_listing_file_name) as f:
+            original_trade_offers = json.load(f)
 
-    return original_trade_offers
+        return original_trade_offers
+    except FileNotFoundError:
+        return {}
 
 
 def save_bot_listing_to_disk(trade_offers, bot_listing_file_name=None):
@@ -217,7 +218,7 @@ def update_and_save_bot_listing_to_disk(
 
 
 def main():
-    latest_trade_offers = download_and_parse_bot_listing()
+    download_and_parse_bot_listing()
 
     return True
 
