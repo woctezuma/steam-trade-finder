@@ -88,7 +88,7 @@ The default market appID is `448720` for [Puzzle Box](https://www.steamcardexcha
 
 - [Wiki: **neutral** Steam trades](https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Trading#steamtradematcher),
 - [Steam Trade Matcher (STM)](https://www.steamtradematcher.com/),
-- [Wiki: automated STM based on ArchiSteamFarm (ASF)](https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Statistics#public-asf-stm-listing),
+- [Wiki: automated STM based on ArchiSteamFarm (ASF)](https://github.com/JustArchiNET/ArchiSteamFarm/wiki/ItemsMatcherPlugin#publiclisting),
 - [A public listing of ASF bots](https://asf.justarchi.net/STM).
 - [Official API for the public listing ASF bots][api-for-asf-bots]
 
